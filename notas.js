@@ -15,6 +15,14 @@
 // y para mayor seguridad instalar la npm i faker@5.5.3 o aun mejor npm i @faker-js/faker
 // y su importacion seria import faker = require('@faker-js/faker')
 
+// PARA MANEJO DE ERRORES CON STATUS CODE SE PUEDE USAR BOOM
+// instalar con npm i @hapi/boom
+
+// PARA VALIDAR LOS DATOS EN EL MIDDLEWARE PODEMOS USAR JOI
+// instalar npm i joi
+
+// PARA DEJAR QUE OTROS ORIGENES SE CONECTEN DEBEMOS IMPLEMENTAR CORS
+// npm i cors
 
 // ROUTING
 const express = require('express');
