@@ -1,5 +1,5 @@
 
-# API ecommercer de un salon de belleza
+# DOCUMENTACIÓN: API ecommerce de un salon de belleza
 
 Esta api tiene la logica de un centro de belleza, donde los usuarios pueden realizar reservas tanto de productos de belleza como de servicios, colocan la fecha y hora, y su cita esta separada.
 
