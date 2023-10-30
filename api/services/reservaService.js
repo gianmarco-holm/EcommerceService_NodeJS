@@ -1,4 +1,4 @@
-const { faker } = require("@faker-js/faker/locale/es_MX");
+const { faker } = require("@faker-js/faker");
 const boom = require("@hapi/boom");
 
 class ReservaService {
