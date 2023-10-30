@@ -19,7 +19,7 @@ class ProductoService {
         descripcionProducto: faker.commerce.productDescription(),
         stockProducto: faker.number.int({ min: 10, max: 100 }),
         imagenProducto: faker.image.urlLoremFlickr(640, 480, 'hair'),
-        categoriaProducto: faker.seed(categorias),
+        categoriaProducto: faker.helpers.arrayElement(categorias),
       });
     }
   }
