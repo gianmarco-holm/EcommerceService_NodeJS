@@ -83,14 +83,14 @@ router.post('/login',
         // Si el usuario existe, verifica la contraseña
         if (usuario.contraseniaUsuario === contraseniaUsuario) {
           // La contraseña es correcta, puedes devolver verdadero
-          res.status(200).json({ message: "Usuario encontrado" });
+          res.status(200).json({ success: true });
         } else {
           // La contraseña es incorrecta, devuelve falso
-          res.status(200).json({ message: "Contraseña no encontrada" });
+          res.status(200).json({ success: false });
         }
       } else {
         // El usuario no existe, devuelve falso
-        res.status(200).json({ message: "Usuario no encontrado" });
+        res.status(200).json({ success: false });
       }
     } catch (error) {
       next(error);
