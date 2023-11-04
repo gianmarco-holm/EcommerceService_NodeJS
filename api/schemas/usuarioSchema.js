@@ -34,4 +34,8 @@ const deleteUsuarioSchema = Joi.object({
   idUsuario: idUsuario.required(),
 })
 
-module.exports = { createUsuarioSchema, updateUsuarioSchema, getUsuarioSchema, deleteUsuarioSchema }
+const findByEmail = Joi.object({
+  correoUsuario: correoUsuario.required(),
+  contraseniaUsuario: contraseniaUsuario.required(),
+})
+module.exports = { createUsuarioSchema, updateUsuarioSchema, getUsuarioSchema, deleteUsuarioSchema, findByEmail }

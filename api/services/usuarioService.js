@@ -71,6 +71,15 @@ class UsuarioService {
     this.usuarios.splice(index,1);
     return{ idUsuario };
   }
+
+  async findByEmail(correoUsuario) {
+    const usuario = this.usuarios.find(item => item.correoUsuario === correoUsuario);
+    if (!usuario) {
+      throw boom.notFound('Usuario no encontrado');
+    }
+    return usuario;
+  }
 }
+
 
 module.exports = UsuarioService;

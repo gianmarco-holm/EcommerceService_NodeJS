@@ -1,7 +1,7 @@
 const express = require('express');
 const UsuarioService = require('../services/usuarioService');
 const validatorHandler = require('../middlewares/validatorHandler');
-const { createUsuarioSchema, updateUsuarioSchema, getUsuarioSchema, deleteUsuarioSchema } = require('../schemas/usuarioSchema')
+const { createUsuarioSchema, updateUsuarioSchema, getUsuarioSchema, deleteUsuarioSchema, findByEmail } = require('../schemas/usuarioSchema')
 
 const router = express.Router();
 const service = new UsuarioService();
@@ -65,6 +65,33 @@ router.delete('/:idUsuario',
       const { idUsuario } = req.params;
       const rta = await service.delete(idUsuario);
       res.status(200).json(rta);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/login',
+  validatorHandler(findByEmail, 'body'),
+  async (req, res, next) => {
+    try {
+      const { correoUsuario, contraseniaUsuario } = req.body;
+      // Busca el usuario por su correo electrónico
+      const usuario = await service.findByEmail(correoUsuario);
+
+      if (usuario) {
+        // Si el usuario existe, verifica la contraseña
+        if (usuario.contraseniaUsuario === contraseniaUsuario) {
+          // La contraseña es correcta, puedes devolver verdadero
+          res.status(200).json({ message: "Usuario encontrado" });
+        } else {
+          // La contraseña es incorrecta, devuelve falso
+          res.status(200).json({ message: "Contraseña no encontrada" });
+        }
+      } else {
+        // El usuario no existe, devuelve falso
+        res.status(200).json({ message: "Usuario no encontrado" });
+      }
     } catch (error) {
       next(error);
     }
