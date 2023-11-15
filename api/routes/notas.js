@@ -24,6 +24,45 @@
 // PARA DEJAR QUE OTROS ORIGENES SE CONECTEN DEBEMOS IMPLEMENTAR CORS
 // npm i cors
 
+// PERSISTENCIA
+// Si los datos se clonan de git, se puede instalar todo lo anterior con npm i
+
+// DOCKER
+// Despues de instalar docker se sigue esta configuración
+// Se crea el archivo docker-compose.yml
+
+// Para integrar postgresql con nodejs se instala la libreria pg
+// npm install pg
+
+// ORM
+// Luego de realizar la configuración de Docker se instala sequelize como ORM
+// npm install --save sequelize
+// Luego la instalación de los drivers que necesitamos
+// npm install --save pg pg-hstore
+// como ya tenemos instalado pg solo instalamos npm install --save pg-hstore
+
+
+
+
+//TABLAS
+
+// CREATE TABLE public.usuarios
+// (
+//     "idUsuario" uuid NOT NULL,
+//     "nombreUsuario" character varying(255) NOT NULL,
+//     "apellidoUsuario" character varying(255),
+//     "correoUsuario" character varying(255) NOT NULL,
+//     "contraseniaUsuario" character varying(255) NOT NULL,
+//     "telefonoUsuario" character varying(15),
+//     "direccionUsuario" character varying(255),
+//     PRIMARY KEY ("idUsuario")
+// );
+
+// ALTER TABLE IF EXISTS public.usuarios
+//     OWNER to holm;
+
+
+
 // ROUTING
 const express = require('express');
 const { faker } = require("@faker-js/faker");

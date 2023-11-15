@@ -1,0 +1,78 @@
+# Definimos que contenedores vamos a usar.
+
+# MODO 01 QUE NO FUNCIONA
+# version: '3.3' # Version del yml que vamos a usar.
+
+# services: # Colocamos el nombre del servicio que vamos a usar, se puede colocar cualquier nombre.
+#   postgres:
+#     image: postgres:13 # Le indicamos que quiero correr en el contenedor la imagen de postgres v 13
+#     environment: # Colocamos las variables de ambiente
+#       - POSTGRES_DB=glamourLink
+#       - POSTGRES_USER=holm
+#       - POSTGRES_PASSWORD=18199218
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - ./postgres_data:/var/lib/postgresql/data
+
+# MODO 02 QUE FUNCIONA
+version: '3.3' # Version del yml que vamos a usar.
+
+services: # Colocamos el nombre del servicio que vamos a usar, se puede colocar cualquier nombre.
+  postgres:
+    container_name: glamourLink # Le coloca un nombre al contenedor
+    image: postgres:latest # Le indicamos que quiero correr en el contenedor la imagen de postgres v 13
+    restart: always
+    environment: # Colocamos las variables de ambiente
+      - POSTGRES_DB=glamourLink
+      - POSTGRES_USER=holm
+      - POSTGRES_PASSWORD=18199218
+    ports:
+      - "5432:5432"
+    volumes:
+      - "~/postgres_data:/var/lib/postgresql/data"
+
+# MODO 03 QUE FUNCIONA
+# version: '3.3' # Version del yml que vamos a usar.
+
+# services: # Colocamos el nombre del servicio que vamos a usar, se puede colocar cualquier nombre.
+#   postgres:
+#     image: postgres # Le indicamos que quiero correr en el contenedor la imagen de postgres v 13
+#     restart: always
+#     environment: # Colocamos las variables de ambiente
+#       - POSTGRES_DB=glamourLink
+#       - POSTGRES_USER=holm
+#       - POSTGRES_PASSWORD=18199218
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - ./postgres_data:/var/lib/postgresql/data
+
+# El servicio se levanta con >> "docker-compose up -d postgres" debe salir "done"
+# Para comprobar que esta bien se usa "docker-compose ps"
+# Para apagar el servicio se usa >> "docker-compose down"
+# Los contenedors son stateless, no tienen estado, y las BD se borran al apagarla, asi que se tiene que crear un volumen.
+# En el volumen le digo que tendra persistencia en mi proyecto y luego que se puede guardar en la ruta que le di, esta ruta depende de la base de datos.
+
+# Para ingresar al contenedor del servicio postgres en docker se usa >> "docker-compose exec postgres bash".
+# Para conectarme a la consola de postgres se usa >> "psql -h localhost -d my_store -U nico".
+# Para saber si estoy en la bd uso el comando de ver el diagrama "\d+"
+# Para salir de la bd se usa "\q"
+# Para salir del contenedor se uspsa "exit"
+
+# Ahora si queremos ingresar a la interfaz grafica tenemos que declarar otro servicio ya que es un app aparte
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "5050:80" # Lo comunica con el puerto 80 del contenedor.
+
+# Para levantear el servicio se usa >> docker-compose up -d pgadmin
+# Como es una interfaz web puedo ir al puerto 5050 y conectarme.
+# Debemos recordar que es un software externo que se va a conectar a nuestra bd del contenedor.
+# Con >> "docker ps" podemos obtener el id del contenedor del servicio postgres que es donde esta corriendo nuestra bd.
+# Con ese id puedo saber la ip donde esta corriendo con el comando >> "docker inspect c2376d76a3de"
+# Con esta ip address puedo conectar mi base de datos con el server que estoy creando en pgadmin
