@@ -41,18 +41,17 @@ const ReservaSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW,
   },
-  // total: {
-  //   type: DataTypes.VIRTUAL,
-  //   get() {
-  //     if (this.reservas_productos && this.reservas_productos.length > 0) {
-  //       return this.reservas_productos.reduce((total, item) => {
-  //         return total + (item.precioProducto * item.ReservaProducto.cantidadReserva);
-  //       }, 0);
-  //     }
-  //     return 0;
-  //   }
-  // }
-
+  total: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      if (this.reservas_productos && this.reservas_productos.length > 0) {
+        return this.reservas_productos.reduce((total, item) => {
+          return total + (item.precioProducto * item.ReservaProducto.cantidadReserva);
+        }, 0);
+      }
+      return 0;
+    }
+  }
 };
 
 class Reserva extends Model {
@@ -60,6 +59,7 @@ class Reserva extends Model {
     // Relación muchos a uno con usuario
     this.belongsTo(models.Usuario, {
       as: 'reservas_usuario',
+      foreignKey: 'id_usuario'
     });
     // Relación muchos a muchos con Productos
     this.belongsToMany(models.Producto, {

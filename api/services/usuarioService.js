@@ -53,9 +53,10 @@ class UsuarioService {
 // Para relación 1 a 1
 async find() {
   try {
-    const data = await models.Usuario.findAll({
-      include: ['usuario_reservas']
-    });
+    const data = await models.Usuario.findAll();
+    // const data = await models.Usuario.findAll({
+    //   include: ['usuario_reservas']
+    // });
     return data;
   } catch (error) {
     throw boom.badImplementation('Error al encontrar usuarios', error);
@@ -66,8 +67,8 @@ async find() {
     const usuario = await models.Usuario.findByPk(idUsuario, {
       include: [
         {
-          association: 'reservas',
-          include: ['productos']
+          association: 'usuario_reservas',
+          include: ['reservas_productos']
         }
       ]
     })
@@ -87,6 +88,13 @@ async find() {
     await usuario.destroy();
     return { idUsuario };
   }
+
+  // async delete(idUsuario) {
+  //   const usuario = await this.findOne(idUsuario);
+  //   await usuario.destroy({ include: 'usuario_reservas' });
+  //   return { idUsuario };
+  // }
+
 
   async findByEmail(correoUsuario) {
     try {

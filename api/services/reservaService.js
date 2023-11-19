@@ -27,9 +27,35 @@ class ReservaService {
     return nuevoElemento;
   }
 
+  // async find() {
+  //   try {
+  //     const data = await models.Reserva.findAll({include: 'reservas_usuario'});
+  //     return data;
+  //   } catch (error) {
+  //     throw boom.badImplementation('Error al encontrar las reservas', error);
+  //   }
+  // }
   async find() {
     try {
-      const data = await models.Reserva.findAll();
+      const data = await models.Reserva.findAll({
+        include: [
+          {
+            model: models.Usuario,
+            as: 'reservas_usuario',
+            attributes: {
+              exclude: ['createdAt', 'contraseniaUsuario']
+            },
+          },
+          {
+            model: models.Producto, // Reemplaza 'Producto' con el nombre real de tu modelo
+            as: 'reservas_productos',
+            //through: { attributes: [] }, // Para evitar que aparezcan las columnas de la tabla de unión
+          },
+        ],
+        attributes: {
+          exclude: ['createdAt'],
+        },
+      });
       return data;
     } catch (error) {
       throw boom.badImplementation('Error al encontrar las reservas', error);
