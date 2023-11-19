@@ -1,32 +1,48 @@
-const { faker } = require("@faker-js/faker");
+// const { faker } = require("@faker-js/faker");
 const boom = require("@hapi/boom");
+const { models } = require('./../libs/sequelize');
 
 class ReservaService {
 
   constructor() {
-    this.reservas = [];
   }
 
   async create(data) {
-    const nuevaReserva = {
-      idReserva: faker.string.uuid(),
-      ...data,
-      estado: 'pendiente',
-    };
-    this.reservas.push(nuevaReserva);
-    return nuevaReserva;
+    try {
+      return await models.Reserva.create(data);
+    } catch (error) {
+      throw boom.badImplementation('Error al crear la reserva', error);
+    }
+  }
+
+  async addItem(data) {
+    const { idReserva, idProducto, cantidadReserva } = data;
+    // Validar si el producto existe
+    const producto = await models.Producto.findByPk(idProducto);
+    if (!producto) {
+      throw boom.notFound('Producto no encontrado');
+    }
+    // Crear el elemento ReservaProducto
+    const nuevoElemento = await models.ReservaProducto.create(data);
+    return nuevoElemento;
   }
 
   async find() {
     try {
-      return this.reservas;
+      const data = await models.Reserva.findAll();
+      return data;
     } catch (error) {
-      throw boom.badImplementation('Se produjo un error al encontrar reservas de productos');
+      throw boom.badImplementation('Error al encontrar las reservas', error);
     }
   }
 
   async findOne(idReserva) {
-    const reserva = this.reservas.find(item => item.idReserva === idReserva);
+    const reserva = await models.Reserva.findByPk(idReserva, {
+      include: [
+        'reservas_usuario',
+        'reservas_productos'
+      ]
+    })
     if (!reserva) {
       throw boom.notFound('Reserva no encontrada');
     }
@@ -34,26 +50,50 @@ class ReservaService {
   }
 
   async update(idReserva, cambios) {
-    const index = this.reservas.findIndex(item => item.idReserva === idReserva);
-    if (index === -1) {
-      throw boom.notFound('Reserva no encontrada');
-    }
-    const reserva = this.reservas[index];
-    this.reservas[index] = {
-      ...reserva,
-      ...cambios
-    };
-    return this.reservas[index];
+    const reserva = await this.findOne(idReserva);
+    return await reserva.update(cambios);
   }
 
   async delete(idReserva) {
-    const index = this.reservas.findIndex(item => item.idReserva === idReserva);
-    if (index === -1) {
-      throw boom.notFound('Reserva no encontrada');
-    }
-    this.reservas.splice(index, 1);
+    const reserva = await this.findOne(idReserva);
+    await reserva.destroy();
     return { idReserva };
   }
 }
 
 module.exports = ReservaService;
+
+// Para enviar información junto con usuario
+// async create(data) {
+//   try {
+//     const dataUsuario = await models.Usuario.create(data.usuario);
+//     const dataReserva = await models.Reserva.create({
+//       ...data,
+//       idUsuario: dataUsuario.id
+//     })
+//     return await models.Reserva.create(data);
+//   } catch (error) {
+//     throw boom.badImplementation('Error al crear la reserva', error);
+//   }
+// }
+// O
+// async create(data) {
+//   try {
+//     return await models.Reserva.create(data, {
+//   include: ['usuario']
+// });
+//   } catch (error) {
+//     throw boom.badImplementation('Error al crear la reserva', error);
+//   }
+// }
+//Para relacion uno a uno
+// async find() {
+//   try {
+//     const data = await models.Reserva.findAll({
+//       include: ['usuario']
+//     });
+//     return data;
+//   } catch (error) {
+//     throw boom.badImplementation('Error al encontrar las reservas', error);
+//   }
+// }

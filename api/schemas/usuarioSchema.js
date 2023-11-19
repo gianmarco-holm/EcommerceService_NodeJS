@@ -7,6 +7,7 @@ const correoUsuario = Joi.string().email();
 const contraseniaUsuario = Joi.string().pattern(new RegExp('^.{8}$'));
 const telefonoUsuario = Joi.string();
 const direccionUsuario = Joi.string();
+const rol = Joi.string();
 
 const createUsuarioSchema = Joi.object({
   nombreUsuario: nombreUsuario.required(),
@@ -15,6 +16,7 @@ const createUsuarioSchema = Joi.object({
   contraseniaUsuario: contraseniaUsuario.required(),
   telefonoUsuario: telefonoUsuario.required(),
   direccionUsuario: direccionUsuario.required(),
+  rol: rol,
 })
 
 const updateUsuarioSchema = Joi.object({
@@ -24,6 +26,7 @@ const updateUsuarioSchema = Joi.object({
   contraseniaUsuario: contraseniaUsuario,
   telefonoUsuario: telefonoUsuario,
   direccionUsuario: direccionUsuario,
+  rol: rol,
 })
 
 const getUsuarioSchema = Joi.object({
@@ -38,4 +41,10 @@ const findByEmail = Joi.object({
   correoUsuario: correoUsuario.required(),
   contraseniaUsuario: contraseniaUsuario.required(),
 })
-module.exports = { createUsuarioSchema, updateUsuarioSchema, getUsuarioSchema, deleteUsuarioSchema, findByEmail }
+
+module.exports = { createUsuarioSchema,
+  updateUsuarioSchema,
+  getUsuarioSchema,
+  deleteUsuarioSchema,
+  findByEmail
+};

@@ -5,11 +5,17 @@ const Joi = require('joi');
 
 const idProducto = Joi.string().uuid();
 const nombreProducto = Joi.string();
-const precioProducto = Joi.number().min(50).max(200).precision(10).positive();
+const precioProducto = Joi.number().min(50).max(200).precision(2).positive();
 const descripcionProducto = Joi.string();
 const stockProducto = Joi.number().integer().min(10).max(100).positive();
 const imagenProducto = Joi.string().uri();
 const categoriaProducto = Joi.string().valid('producto', 'servicio');
+
+const precioProducto_min = Joi.number().integer();
+const precioProducto_max = Joi.number().integer();
+
+const limit = Joi.number().integer();
+const offset = Joi.number().integer();
 
 const createProductoSchema = Joi.object({
   nombreProducto: nombreProducto.required(),
@@ -37,4 +43,21 @@ const deleteProductoSchema = Joi.object({
   idProducto: idProducto.required(),
 })
 
-module.exports = { createProductoSchema, updateProductoSchema, getProductoSchema, deleteProductoSchema }
+const queryProductoSchema = Joi.object({
+  limit,
+  offset,
+  precioProducto,
+  precioProducto_min,
+  precioProducto_max: precioProducto_max.when('precioProducto_min', {
+    is: Joi.number().integer(),
+    then: Joi.required()
+  })
+});
+
+module.exports = {
+  createProductoSchema,
+  updateProductoSchema,
+  getProductoSchema,
+  deleteProductoSchema,
+  queryProductoSchema
+};

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/errorHandles');
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/errorHandles');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +20,7 @@ routerApi(app);
 
 // los middlewares se usa despues de declarar el router
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 

@@ -70,6 +70,28 @@ services: # Colocamos el nombre del servicio que vamos a usar, se puede colocar 
     ports:
       - "5050:80" # Lo comunica con el puerto 80 del contenedor.
 
+  # mysql:
+  #   image: mysql:5
+  #   environment:
+  #     - MYSQL_DATABASE=glamourLink
+  #     - MYSQL_USER=root
+  #     - MYSQL_ROOT_PASSWORD=18199218
+  #     - MYSQL_PORT=3306
+  #   ports:
+  #     -3306:3306
+  #   volumes:
+  #     - "~/mysql_data:/var/lib/mysql"
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=admin@mail.com
+  #     - PMA_HOST=mysql
+  #   ports:
+  #     - 8080:80
+  # Si queremos mysql, tendriamos que descargar su driver de mysql que es >> npm install --save mysql2
+  # Ademas tendriamos que cambiar el puerto y el usuario de .env, y el dialect de sequelize
+
 # Para levantear el servicio se usa >> docker-compose up -d pgadmin
 # Como es una interfaz web puedo ir al puerto 5050 y conectarme.
 # Debemos recordar que es un software externo que se va a conectar a nuestra bd del contenedor.

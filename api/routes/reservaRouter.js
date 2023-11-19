@@ -1,7 +1,12 @@
 const express = require('express');
 const ReservaService = require('../services/reservaService');
 const validatorHandler = require('../middlewares/validatorHandler');
-const { createReservaSchema, updateReservaSchema, getReservaSchema, deleteReservaSchema } = require('../schemas/reservaSchema');
+const {
+  createReservaSchema,
+  updateReservaSchema,
+  getReservaSchema,
+  deleteReservaSchema,
+  agregarElementoSchema } = require('../schemas/reservaSchema');
 
 const router = express.Router();
 const service = new ReservaService();
@@ -38,6 +43,20 @@ router.post('/',
     next(error);
   }
 });
+
+router.post(
+  '/agregar-elemento',
+  validatorHandler(agregarElementoSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const nuevoElemento = await service.addItem(body);
+      res.status(201).json(nuevoElemento);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.patch('/:idReserva',
   validatorHandler(getReservaSchema, 'params'),

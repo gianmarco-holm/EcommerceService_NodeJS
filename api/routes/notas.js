@@ -41,7 +41,21 @@
 // npm install --save pg pg-hstore
 // como ya tenemos instalado pg solo instalamos npm install --save pg-hstore
 
+// MIGRACIONES
+// Es un control de cambio so versiones en la estructura de la base de datos
+// npm i sequelize-cli --save-dev
+// Se añade el archivo de configuracion llamado .sequelizerc
+// Luego se realiza la configuracion en db/config.js
+// Luego se agrega los scripts de migraciones en package.json para poder ejecutar las lineas de comand
+// "migrations:generate": "sequelize-cli migration:generate --name"
+// La linea de comando sería el siguiente y sirve para crear el codigo listo para correr migraciones
+// npm run migrations:generate create-usuario
+// Si todo quedo bien entonces deberia de correr
+// npm run migrations:run
+// npm run migrations:generate create-reserva
+// npm run migrations:generate create-producto
 
+// RELACIONES
 
 
 //TABLAS
