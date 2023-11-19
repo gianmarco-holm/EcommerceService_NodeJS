@@ -5,9 +5,9 @@ const Joi = require('joi');
 
 const idProducto = Joi.string().uuid();
 const nombreProducto = Joi.string();
-const precioProducto = Joi.number().min(50).max(200).precision(2).positive();
+const precioProducto = Joi.number().min(20).max(999).precision(2).positive();
 const descripcionProducto = Joi.string();
-const stockProducto = Joi.number().integer().min(10).max(100).positive();
+const stockProducto = Joi.number().integer().min(10).max(1000).positive();
 const imagenProducto = Joi.string().uri();
 const categoriaProducto = Joi.string().valid('producto', 'servicio');
 
